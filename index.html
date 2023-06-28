@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>进制转换器</title>
+    <link rel="stylesheet" href="./index.css">
+    <script>
+        function copyText(inputId) {
+            var input = document.getElementById(inputId);
+            input.select();
+            document.execCommand("copy");
+            copySuccessAlert();
+        }
+        // from : 进制，  value：值
+        function convert(from) {
+            var hex = document.getElementById("hex");
+            var decimal = document.getElementById("decimal");
+            var octal = document.getElementById("octal");
+            var binary = document.getElementById("binary");
+            var char = document.getElementById("character");
+
+            var dec = 0;
+            console.log(1);
+
+            switch (from) {
+                case "hex":
+                    dec = parseInt(hex.value ? hex.value : 0, 16)
+                    break;
+                case "decimal":
+                    dec = parseInt(decimal.value ? decimal.value :0 , 10)
+                    break;
+                case "octal":
+                    dec = parseInt(octal.value ? octal.value :0, 8)
+                    break;
+                case "binary":
+                    dec = parseInt(binary.value ? binary.value : 0, 2)
+                    break;
+                case "character":
+                    dec = stringToNumber(char.value)
+                    break;
+            }
+
+            hex.value = dec.toString(16)
+            decimal.value = dec;
+            octal.value = dec.toString(8);
+            binary.value = dec.toString(2);
+            char.value = numberToString(dec);
+        }
+
+
+        function stringToNumber(str) {
+            var number = 0;
+            for (var i = 0; i < str.length; i++) {
+                var charCode = str.charCodeAt(i);
+                number = number * 256 + charCode;
+            }
+            return number;
+        }
+        function numberToString(number) {
+            var str = '';
+            while (number > 0) {
+                var charCode = number & 0xff; // 取出最低8位的值
+                str = String.fromCharCode(charCode) + str;
+                number = number >> 8; // 右移8位
+            }
+            return str;
+        }
+
+        function copySuccessAlert() {
+            var message = document.getElementById("message");
+            message.style.display = "block";
+            setTimeout(function () {
+                message.style.display = "none";
+            }, 1000);
+        };
+
+
+        function decimalToBase(value, base) {
+            return value.toString(base);
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <h2>进制转换器</h2>
+
+    <label for="hex">16进制：</label>
+    <input class="in" type="text" id="hex" onfocus="copyText('hex')" autofocus />
+    <br>
+
+    <label for="decimal">10进制：</label>
+    <input class="in" type="text" id="decimal" onfocus="copyText('decimal')"  />
+    <br>
+
+    <label for="octal">8进制：</label>
+    <input class="in" type="text" id="octal" onfocus="copyText('octal')" />
+    <br>
+
+    <label for="binary">2进制：</label>
+    <input class="in" type="text" id="binary" onfocus="copyText('binary')" />
+    <br>
+    
+    <label for="character">字符：</label>
+    <input class="in" type="text" id="character" onfocus="copyText('character')"  />
+
+    <div id="message">
+        <p>复制成功</p>
+    </div>
+
+
+    <script>
+        
+        var inputs = document.querySelectorAll(".in")
+        inputs.forEach(e=>{
+            e.oninput = convert.bind(convert,e.id)
+        })
+
+    </script>
+</body>
+
+</html>

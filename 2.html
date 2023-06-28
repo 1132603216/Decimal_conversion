@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>提示框</title>
+    <style>
+        #message {
+            display: none;
+            position: fixed;
+            top: 20px; /* 距离页面顶部的距离 */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var message = document.getElementById("message");
+            message.style.display = "block";
+            setTimeout(function() {
+                fadeOut(message);
+            }, 1000);
+        };
+
+        function fadeOut(element) {
+            var op = 1;  // 初始不透明度
+            var timer = setInterval(function () {
+                if (op <= 0.1) {
+                    clearInterval(timer);
+                    element.style.display = "none";
+                }
+                element.style.opacity = op;
+                element.style.filter = "alpha(opacity=" + op * 100 + ")";
+                op -= op * 0.1;
+            }, 50);
+        }
+    </script>
+</head>
+<body>
+    <div id="message">
+        <p>复制成功</p>
+    </div>
+</body>
+</html>
